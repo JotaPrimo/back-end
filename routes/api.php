@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\API\PetsEstimacaoController;
+use App\Http\Controllers\Api\ProdutoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PersonController;
 use App\Http\Controllers\API\EnderecoController;
 use App\Http\Controllers\API\UsuarioController;
 use App\Http\Controllers\API\LivroController;
+use App\Http\Controllers\API\ComidaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,6 +19,35 @@ use App\Http\Controllers\API\LivroController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('pets')->group(function () {
+    // requisicao post é para criar um novo objeto
+    Route::post('/', [PetsEstimacaoController::class, 'create']);
+    // requisao get é pra pegar dados
+    Route::get('/', [PetsEstimacaoController::class, 'getAll']);
+    // requisao do tipo delete
+    Route::delete('/', [PetsEstimacaoController::class, 'delete']);
+    // get + id serve para para encontrar um registro unico
+    Route::get('/{id}',[PetsEstimacaoController::class, 'get']);
+    // put + id serve para atualizar
+    Route::put('/{id}',[PetsEstimacaoController::class, 'update']);
+});
+
+Route::prefix('produto')->group(function () {
+    Route::get('/',[ProdutoController::class, 'getAll']);
+    Route::post('/',[ProdutoController::class, 'create']);
+    Route::delete('/{id}',[ProdutoController::class, 'delete']);
+    Route::get('/{id}',[ProdutoController::class, 'get']);
+    Route::put('/{id}',[ProdutoController::class, 'update']);
+});
+
+Route::prefix('comida')->group(function () {
+    Route::get('/',[ComidaController::class, 'getAll']);
+    Route::post('/',[ComidaController::class, 'create']);
+    Route::delete('/{id}',[ComidaController::class, 'delete']);
+    Route::get('/{id}',[ComidaController::class, 'get']);
+    Route::put('/{id}',[ComidaController::class, 'update']);
+});
 
 Route::prefix('livro')->group(function () {
     Route::get('/',[LivroController::class, 'getAll']);

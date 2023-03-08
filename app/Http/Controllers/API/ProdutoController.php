@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produto;
 use Illuminate\Http\Request;
-use App\Models\Livro;
-use Exception;
+use PHPUnit\Exception;
 
-class LivroController extends Controller
+class ProdutoController extends Controller
 {
     public function getAll(Request $request)
     {
         try {
-            $data = Livro::orderBy('titulo', 'asc')->get();
+            $data = Produto::orderBy('titulo', 'asc')->get();
             return response()->json($data, 200);
 
         } catch (\Exception $e) {
@@ -30,7 +30,7 @@ class LivroController extends Controller
     public function get(Request $request, int $id)
     {
         try {
-            $data = Livro::findOrfail($id);
+            $data = Produto::findOrfail($id);
             return response()->json($data, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -47,11 +47,12 @@ class LivroController extends Controller
     public function create(Request $request)
     {
         try {
-            Livro::create([
-                'titulo' => $request['titulo'],
-                'autor' => $request['autor'],
-                'isbn' => $request['isbn'],
-                'qntd_exemplares' => $request['qntd_exemplares']
+            Produto::create([
+                'nome' => $request['nome'],
+                'preco' => $request['preco'],
+                'tipo' => $request['tipo'],
+                'descricao' => $request['descricao'],
+                'quantidade' => $request['quantidade'],
             ]);
 
             return response()->json([
@@ -71,7 +72,7 @@ class LivroController extends Controller
     public function delete(int $id, Request $request)
     {
         try {
-            Livro::findOrfail($id)->delete();
+            Produto::findOrfail($id)->delete();
             return response()->json([
                 "message" => "Usuário deletado com succeso",
                 "success" => true
@@ -81,7 +82,7 @@ class LivroController extends Controller
             return response()->json([
                 "status" => 400,
                 "type" => $request->url(),
-                "detail" => "Livro não encontrado. Por isso não foi deletado com sucesso",
+                "detail" => "Produto não encontrado. Por isso não foi deletado com sucesso",
                 "timestamp" => date('d/m/Y H:i:s.u')
             ], 400);
         }
@@ -90,15 +91,15 @@ class LivroController extends Controller
 
     public function update(Request $request, int $id)
     {
-
         try {
-            $livro = Livro::findOrfail($id);
+            $livro = Produto::findOrfail($id);
 
             $livro->update([
-                'titulo' => $request['titulo'],
-                'autor' => $request['autor'],
-                'isbn' => $request['isbn'],
-                'qntd_exemplares' => $request['qntd_exemplares']
+                'nome' => $request['nome'],
+                'preco' => $request['preco'],
+                'tipo' => $request['tipo'],
+                'descricao' => $request['descricao'],
+                'quantidade' => $request['quantidade'],
             ]);
 
             return response()->json([
@@ -116,5 +117,4 @@ class LivroController extends Controller
         }
 
     }
-
 }
